@@ -26,4 +26,23 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function indexUndanganDetail()
+    {
+        return view('home.undangan-detail');
+    }
+    public function indexUndanganBuat()
+    {
+        return view('home.undangan-buat');
+    }
+    public function indexTambahTamu()
+    {
+        return view('home.daftar-tamu');
+    }
+
+
+    public function indexLayananKami()
+    {
+        return view('home.layanan-kami');
+    }
 }
