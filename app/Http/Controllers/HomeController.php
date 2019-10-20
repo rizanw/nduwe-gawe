@@ -27,6 +27,10 @@ class HomeController extends Controller
         return view('home');
     }
 
+    public function indexProfile()
+    {
+        return view('home.profile');
+    }
     public function indexUndanganDetail()
     {
         return view('home.undangan-detail');
