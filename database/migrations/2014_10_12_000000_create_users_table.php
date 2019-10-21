@@ -21,6 +21,9 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->string('no_hp', 15);
+            $table->string('alamat');
+            $table->date('tgl_lahir');
         });
     }
 
