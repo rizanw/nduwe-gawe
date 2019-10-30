@@ -15,7 +15,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="contact-tab" data-toggle="tab" href="#bayar" role="tab"
-                   aria-controls="contact" aria-selected="false">Bayar</a>
+                   aria-controls="contact" aria-selected="false">Pembayaran</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="contact-tab" data-toggle="tab" href="#lihat" role="tab"
@@ -234,5 +234,5 @@
 @endsection
 
 @section('script')
-    
+
 @endsection

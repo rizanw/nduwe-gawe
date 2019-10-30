@@ -25,14 +25,4 @@ Route::get('/home/undangan/2/buat', 'HomeController@indexUndanganDetail')->name(
 Route::get('/home/undangan/3/daftar-tamu', 'HomeController@indexTambahTamu')->name('tamu-daftar');
 
 
-
-
-
-
-
-
-
-
-
-
 Route::get('/admin', 'AdminController@index')->name('admin');
