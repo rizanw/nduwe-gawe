@@ -79,6 +79,23 @@
                     </div>
 
                     <div class="form-group row">
+                        <label for="tgllahir"
+                               class="col-md-4 col-form-label text-md-right">{{ __('Tanggal Lahir') }}</label>
+
+                        <div class="col-md-6">
+                            <input id="alamat" type="date"
+                                   class="form-control @error('tgllahir') is-invalid @enderror" name="tgllahir"
+                                   value="{{ old('tgllahir') }}" required autocomplete="tgllahir">
+
+                            @error('tgllahir')
+                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label for="password"
                                class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
