@@ -157,7 +157,7 @@
                                 <input type="text" id="alamat-acara"
                                        class="form-control @error('alamat-acara') is-invalid @enderror"
                                        name="alamat-acara" placeholder="cth: Jl Teknik Informatika VII A/01"
-                                       value="{{$undanganDetail->alamatara}}" disabled>
+                                       value="{{$undanganDetail->alamat}}" disabled>
                             </div>
                             <div class="col-md">
                                 <label class="form-label" for="tanggal-acara">Tanggal: </label>
@@ -236,7 +236,7 @@
                     </table>
                 </div>
                 <div style="position: absolute; bottom: 50px; right: 0px; padding-right: 200px;">
-                    <button class="btn btn-primary">Buku tamu</button>
+                    <a href="{{route('buku-tamu', $undangan->id)}}" class="btn btn-primary">Buku Tamu</a>
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#tambah-tamu">
                         Tambah Tamu
                     </button>
@@ -246,12 +246,13 @@
             <div class="tab-pane fade" id="bayar" role="tabpanel" aria-labelledby="bayar-tab">
                 <p>
                 <ol>
-                    <li>Jika Sudah bayar data tidak dapat diedit</li>
+                    <li>Jika Sudah klik BAYAR data tidak dapat diedit</li>
                     <li>Maks bayar 1x24jam</li>
                 </ol>
                 </p>
-                ...
-                <button class="btn btn-success">Bayar</button>
+                
+                <!-- <button class="btn btn-success">Bayar</button> -->
+                <a href="{{route('pembayaran', $undangan->id)}}" class="btn btn-danger">Bayar</a>
 
 
             </div>
