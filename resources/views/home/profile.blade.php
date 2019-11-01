@@ -7,13 +7,13 @@
             Nama : {{ Auth::user()->name }}
         </p>
         <p>
-            Email :
+            Email : {{ Auth::user()->email }}
         </p>
         <p>
-            Alamat :
+            Alamat : {{ Auth::user()->alamat }}
         </p>
         <p>
-            No. Hp :
+            No. Hp : {{ Auth::user()->no_hp }}
         </p>
     </div>
 @endsection

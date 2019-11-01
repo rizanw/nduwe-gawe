@@ -14,12 +14,12 @@
                    aria-controls="profile" aria-selected="false">Daftar Tamu</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#bayar" role="tab"
-                   aria-controls="contact" aria-selected="false">Bayar</a>
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#lihat" role="tab"
+                   aria-controls="contact" aria-selected="false">Desain Undangan</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#lihat" role="tab"
-                   aria-controls="contact" aria-selected="false">Lihat undangan</a>
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#bayar" role="tab"
+                   aria-controls="contact" aria-selected="false">Pembayaran</a>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
@@ -141,25 +141,29 @@
                                 <label class="form-label" for="nama-acara">Nama Acara: </label>
                                 <input type="text" id="nama-acara"
                                        class="form-control @error('nama-acara') is-invalid @enderror"
-                                       name="nama-acara" placeholder="cth: ulang tahunkku" value="{{$undangan->nama_acara}}" disabled>
+                                       name="nama-acara" placeholder="cth: ulang tahunkku"
+                                       value="{{$undangan->nama_acara}}" disabled>
                                 <label class="form-label" for="tuan-rumah-acara">Nama tuan rumah: </label>
                                 <input type="text" id="tuan-rumah-acara"
                                        class="form-control @error('tuan-rumah-acara') is-invalid @enderror"
-                                       name="tuan-rumah-acara" placeholder="cth: Wacilatul" value="{{$undangan->tuan_rumah}}" disabled>
+                                       name="tuan-rumah-acara" placeholder="cth: Wacilatul"
+                                       value="{{$undangan->tuan_rumah}}" disabled>
                                 <label class="form-label" for="tempat-acara">Tempat Acara: </label>
                                 <input type="text" id="tempat-acara"
                                        class="form-control @error('tempat-acara') is-invalid @enderror"
-                                       name="tempat-acara" placeholder="cth: Rumah Wacil" value="{{$undanganDetail->tempat}}" disabled>
+                                       name="tempat-acara" placeholder="cth: Rumah Wacil"
+                                       value="{{$undanganDetail->tempat}}" disabled>
                                 <label class="form-label" for="alamat-acara">Alamat lengkap: </label>
                                 <input type="text" id="alamat-acara"
                                        class="form-control @error('alamat-acara') is-invalid @enderror"
-                                       name="alamat-acara" placeholder="cth: Jl Teknik Informatika VII A/01" value="{{$undanganDetail->alamatara}}" disabled>
+                                       name="alamat-acara" placeholder="cth: Jl Teknik Informatika VII A/01"
+                                       value="{{$undanganDetail->alamatara}}" disabled>
                             </div>
                             <div class="col-md">
                                 <label class="form-label" for="tanggal-acara">Tanggal: </label>
                                 <input type="date" id="tanggal-acara"
                                        class="form-control @error('tanggal-acara') is-invalid @enderror"
-                                       name="tanggal-acara"  value="{{$undanganDetail->tanggal}}" disabled>
+                                       name="tanggal-acara" value="{{$undanganDetail->tanggal}}" disabled>
                                 <label class="form-label" for="jam-mulai-acara">Jam mulai: </label>
                                 <input type="time" id="jam-mulai-acara"
                                        class="form-control @error('jam-mulai-acara') is-invalid @enderror"
@@ -172,7 +176,8 @@
                                 <div class="input-group mb-3">
                                     <input type="number" min="0" step="1" id="undangan-kosong-acara"
                                            class="form-control @error('undangan-kosong-acara') is-invalid @enderror"
-                                           name="undangan-kosong-acara" placeholder="cth: 5" value="{{$undangan->jumlah_undangan_kosong}}" disabled>
+                                           name="undangan-kosong-acara" placeholder="cth: 5"
+                                           value="{{$undangan->jumlah_undangan_kosong}}" disabled>
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="basic-addon2">lembar</span>
                                     </div>
@@ -196,33 +201,45 @@
                             <th scope="col">Nama</th>
                             <th scope="col">No hp</th>
                             <th scope="col">Alamat</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Aksi</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Putri End</td>
-                            <td>0812345678</td>
-                            <td>Jl anytin</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Putri Dewi</td>
-                            <td>0812345678</td>
-                            <td>Jl fatfood</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Dewilatul</td>
-                            <td>@0812345678</td>
-                            <td>Jl twitter</td>
-                        </tr>
+                        @php($i_tamu = 1)
+                        @foreach($tamus as $tamu)
+                            <tr>
+                                <th scope="row">{{$i_tamu++}}</th>
+                                <td>{{$tamu->nama}}</td>
+                                <td>{{$tamu->no_hp}}</td>
+                                <td>{{$tamu->alamat}}</td>
+                                <td>[Status Undangan]</td>
+                                <td>
+                                    <form action="{{route('delete-tamu')}}" method="post">
+                                        @csrf
+                                        <div class="form-group">
+                                            <input type="hidden" name="tamu" value="{{$tamu->id}}">
+                                            <input type="submit" class="btn btn-danger delete-tamu" value="Hapus">
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                        @if($tamus->isEmpty())
+                            <tr>
+                                <td colspan="6" style="text-align: center; font-style: italic">Tidak ada data tamu,
+                                    Silakan tambahkan data tamu anda.
+                                </td>
+                            </tr>
+                        @endif
                         </tbody>
                     </table>
                 </div>
                 <div style="position: absolute; bottom: 50px; right: 0px; padding-right: 200px;">
                     <button class="btn btn-primary">Buku tamu</button>
-                    <button class="btn btn-success">Edit</button>
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#tambah-tamu">
+                        Tambah Tamu
+                    </button>
                 </div>
             </div>
 
@@ -278,5 +295,63 @@
 @endsection
 
 @section('script')
+    <!-- Modal Tambah Tamu -->
+    <div class="modal fade" id="tambah-tamu" tabindex="-1" role="dialog" aria-labelledby="tambah-tamu"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tambah-tamu-title">Tambah Tamu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{route('create-tamu')}}" method="post">
+                    @csrf
+                    <input type="hidden" name="undangan" value="{{$undangan->id}}">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nama-tamu">Nama lengkap</label>
+                            <input type="text" class="form-control" id="nama-tamu" name="nama-tamu"
+                                   placeholder="cth: Jono Martelo">
+                        </div>
+                        <div class="form-group">
+                            <label for="nohp-tamu">No hp</label>
+                            <input type="number" min="999" class="form-control" id="nohp-tamu" name="nohp-tamu"
+                                   placeholder="cth: 08219876543">
+                        </div>
+                        <div class="form-group">
+                            <label for="alamat-tamu">Alamat</label>
+                            <input type="text" class="form-control" id="alamat-tamu" name="alamat-tamu"
+                                   placeholder="cth: Jl. Sebrang Kedol RT 10/05 Surabaya">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+    {{--    script  --}}
+    <script>
+        //script for tab navigator
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            localStorage.setItem('activeTab', $(e.target).attr('href'));
+        });
+        var activeTab = localStorage.getItem('activeTab');
+        if (activeTab) {
+            $('.nav-tabs a[href="' + activeTab + '"]').tab('show');
+        }
+
+        // delete tamu
+        $('.delete-tamu').click(function (e) {
+            e.preventDefault();
+            if (confirm('Apakah kamu yakin?')) {
+                $(e.target).closest('form').submit() // Post the surrounding form
+            }
+        });
+    </script>
 @endsection

@@ -25,14 +25,8 @@ Route::get('/home/undangan/{id}/detail', 'HomeController@indexUndanganDetail')->
 Route::get('/home/undangan/3/daftar-tamu', 'HomeController@indexTambahTamu')->name('tamu-daftar');
 
 Route::post('/home/undangan/buat', 'UndanganController@createUndangan')->name('create-undangan');
-
-
-
-
-
-
-
-
+Route::post('/home/undangan/tamu/tambah', 'TamuController@createTamu')->name('create-tamu');
+Route::post('/home/undangan/tamu/hapus', 'TamuController@deleteTamu')->name('delete-tamu');
 
 
 Route::get('/admin', 'AdminController@index')->name('admin');

@@ -39,7 +39,7 @@
                     </td>
                 </tr>
             @endforeach
-            @if($undangan == null)
+            @if($undangan->isEmpty())
                 <tr>
                     <td colspan="7" style="text-align: center; font-style: italic">Tidak ada undangan, Silakan buat undangan anda.</td>
                 </tr>

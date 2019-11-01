@@ -7,4 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Tamu extends Model
 {
     //
+    protected $fillable = [
+        'undangan_id',
+        'nama',
+        'alamat',
+        'no_hp'
+    ];
 }
