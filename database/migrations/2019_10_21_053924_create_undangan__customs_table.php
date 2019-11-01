@@ -17,6 +17,7 @@ class CreateUndanganCustomsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('undangan_id')->unsigned();
             $table->string('nama');
+            $table->string('tempat');
             $table->string('alamat');
             $table->date('tanggal');
             $table->time('jam_mulai');

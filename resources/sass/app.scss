@@ -13,3 +13,25 @@
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/brands';
 
+
+// special golden button
+.btn-gold {
+    color: #fff;
+    background-color: $gold;
+    border-color: $golden-brown;
+    border-radius: 20px;
+    padding: 8px 16px;
+}
+.btn-gold:hover {
+    color: #fff;
+    background-color: darken($gold, 7.5%);
+    border-color: darken($golden-brown, 10%);
+}
+.btn-gold:active {
+    color: #fff;
+    background-color: darken($gold, 7.5%);
+    border-color: darken($golden-brown, 10%);
+}
+.btn-gold:focus {
+    box-shadow: 0 0 0 0.2rem rgba(mix(color-yiq($gold), $golden-brown, 15%), 0.5);
+}
