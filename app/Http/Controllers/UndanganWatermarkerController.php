@@ -25,6 +25,20 @@ class UndanganWatermarkerController extends Controller
             $font->align('center');
             $font->valign('top');
         });
+        $img->text('10 Nopember 999', 320, 530, function($font) {
+            $font->file(base_path('public/fonts/Kastella.ttf'));
+            $font->color('#fff');
+            $font->size(40);
+            $font->align('center');
+            $font->valign('top');
+        });
+        $img->text('10:00 - 15:00', 320, 595, function($font) {
+            $font->file(base_path('public/fonts/Kastella.ttf'));
+            $font->color('#777');
+            $font->size(22);
+            $font->align('center');
+            $font->valign('top');
+        });
 
         return $img->response('png');
     }
