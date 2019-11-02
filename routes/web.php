@@ -26,9 +26,11 @@ Route::get('/home/undangan/{id}/buku-tamu', 'HomeController@indexBukuTamuDetail'
 Route::get('/home/undangan/3/daftar-tamu', 'HomeController@indexTambahTamu')->name('tamu-daftar');
 Route::get('/home/pembayaran/{id}', 'HomeController@pembayaranDetail')->name('pembayaran');
 
+
 Route::post('/home/undangan/buat', 'UndanganController@createUndangan')->name('create-undangan');
 Route::post('/home/undangan/tamu/tambah', 'TamuController@createTamu')->name('create-tamu');
 Route::post('/home/undangan/tamu/hapus', 'TamuController@deleteTamu')->name('delete-tamu');
+Route::post('/home/undangan/pembayaran', 'HomeController@updatePembayaran')->name('update-pembayaran');
 
 
 Route::get('/admin', 'AdminController@index')->name('admin');

@@ -250,11 +250,11 @@
                     <li>Maks bayar 1x24jam</li>
                 </ol>
                 </p>
-                
-                <!-- <button class="btn btn-success">Bayar</button> -->
+                @if($pembayaran)
+                <a href="{{route('pembayaran', $undangan->id)}}" class="btn btn-success">Upload bukti pembayaran</a>
+                @else
                 <a href="{{route('pembayaran', $undangan->id)}}" class="btn btn-danger">Bayar</a>
-
-
+                @endif
             </div>
             <div class="tab-pane fade" id="lihat" role="tabpanel" aria-labelledby="lihat-tab">
                 <img style="max-width: 320px;" src="{{asset('img//undangan-sample01.jpg')}}">

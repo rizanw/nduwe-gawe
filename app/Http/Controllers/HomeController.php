@@ -48,6 +48,7 @@ class HomeController extends Controller
     {
         $undangan = Undangan::find($id);
         $tamus = Tamu::where('undangan_id', '=', $id)->get();
+        $pembayaran = Pembayaran::where('undangan_id', '=', $id)->first();
         // $wordCount = count($tamus);
         // dd($wordCount);
         if ($undangan->user_id != Auth::user()->id)
@@ -62,6 +63,7 @@ class HomeController extends Controller
         return view('home.undangan-detail')
             ->with(compact('undangan'))
             ->with(compact('undanganDetail'))
+            ->with(compact('pembayaran'))
             ->with(compact('tamus'));
     }
 
@@ -101,21 +103,41 @@ class HomeController extends Controller
         $tamus = Tamu::where('undangan_id', '=', $id)->get();
         $jumlahTamu = count($tamus);
         $total = ($jumlahTamu*$paket->harga)+($undangan->jumlah_undangan_kosong*10000);
-        $pembayaran = Pembayaran::find($id);
-        if(!$pembayaran)
+        $pembayaran = Pembayaran::where('undangan_id', '=', $id)->first();
+        if($pembayaran)
         {
+            $bayar = Pembayaran::where('undangan_id', '=', $id)->first();
+            // echo "aa";die();
+        }
+        else{
             $bayar = Pembayaran::create([
                 'undangan_id' => $id,
                 'total_bayar' => $total,
                 'status' => "BELUM BAYAR"
             ]);
+            // echo "bb";die();
             return redirect()->route('pembayaran', ['id' => $id]);
         }
-        else{
-            $bayar = Pembayaran::where('undangan_id', '=', $id)->first();
-        }
+        $bayar = Pembayaran::where('undangan_id', '=', $id)->first();
         return view('home.pembayaran')
             ->with(compact('bayar'))
             ->with(compact('undangan'));
     }
+
+    public function updatePembayaran(Request $request)
+{
+    // echo "aa"; die();
+    // update data pegawai
+    // if ($this->$request->hasFiles() == true) {
+        $file = file_get_contents($_FILES['bukti-bayar']['tmp_name']);
+        $efile = base64_encode($file);
+    // }
+	$upload = Pembayaran::where('id',$request->id)->update([
+        'bukti_bayar' => $efile,
+        'status' => "MENUNGGU VERIFIKASI"
+	]);
+    // alihkan halaman ke halaman pegawai
+    $pembayaran = Pembayaran::find($request->id);
+	return redirect()->route('pembayaran', ['id' => $pembayaran->undangan_id]);
+}
 }
