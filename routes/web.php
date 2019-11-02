@@ -30,3 +30,7 @@ Route::post('/home/undangan/tamu/hapus', 'TamuController@deleteTamu')->name('del
 
 
 Route::get('/admin', 'AdminController@index')->name('admin');
+
+Route::get('/scanner', function () {
+    return view('scanner');
+});
