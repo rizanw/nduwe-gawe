@@ -14,4 +14,14 @@ class Undangan extends Model
         'tuan_rumah',
         'jumlah_undangan_kosong',
     ];
+
+
+    public function undangan_pernikahan(){
+        return $this->hasOne(Undangan_Pernikahan::class, 'undangan_id');
+    }
+
+    public function undangan_custom(){
+        return $this->hasOne(Undangan_Custom::class, 'undangan_id');
+    }
+
 }

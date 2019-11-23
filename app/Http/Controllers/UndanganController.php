@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class UndanganController extends Controller
 {
-    //
     public function createUndangan(Request $request)
     {
         $request->validate([]);
@@ -52,7 +51,7 @@ class UndanganController extends Controller
             ]);
         }
 
-        return redirect()->route('detail-undangan', [$undangan->id])->with('message', 'Berhasil: Undangan telah dibuat!');
+        return redirect()->route('undangan-detail', [$undangan->id])->with('success', 'Berhasil: Undangan telah dibuat! Silakan isi daftar tamu, pilih desain undangan, dan lakukan pembayaran.');
     }
 
     public function readDetailUndangan()

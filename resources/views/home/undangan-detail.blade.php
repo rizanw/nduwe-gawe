@@ -3,6 +3,21 @@
 @section('content')
     <div class="container">
         <h1>Detail Undangan {{$undangan->nama_acara}}</h1>
+        @if ($message = Session::get('success'))
+            <div class="alert alert-success alert-block">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>{{ $message }}</strong>
+            </div>
+        @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#detail" role="tab"
@@ -213,8 +228,9 @@
                                 <td>{{$tamu->nama}}</td>
                                 <td>{{$tamu->no_hp}}</td>
                                 <td>{{$tamu->alamat}}</td>
-                                <td>[Status Undangan]</td>
+                                <td>{{$tamu->status->nama}}</td>
                                 <td>
+                                    @if($tamu->status_id == 1)
                                     <form action="{{route('delete-tamu')}}" method="post">
                                         @csrf
                                         <div class="form-group">
@@ -222,6 +238,7 @@
                                             <input type="submit" class="btn btn-danger delete-tamu" value="Hapus">
                                         </div>
                                     </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -317,7 +334,7 @@
                         </div>
                         <div class="form-group">
                             <label for="nohp-tamu">No hp</label>
-                            <input type="number" min="999" class="form-control" id="nohp-tamu" name="nohp-tamu"
+                            <input type="number" min="99999" class="form-control" id="nohp-tamu" name="nohp-tamu"
                                    placeholder="cth: 08219876543">
                         </div>
                         <div class="form-group">
