@@ -26,10 +26,24 @@
             @foreach($undangan as $u)
                 <tr>
                     <th scope="row">{{$i++}}</th>
-                    <td>[tanggal acara yang mana?]</td>
+                    <td>
+                        @if($u->undangan_pernikahan != null)
+                            {{$u->undangan_pernikahan->tanggal_akad}} <span style="font-weight: bold">(Akad)</span><br>
+                            {{$u->undangan_pernikahan->tanggal_resepsi}} <span style="font-weight: bold">(Resepsi)</span>
+                        @else
+                            {{$u->undangan_custom->tanggal}}
+                        @endif
+                    </td>
                     <td>{{$u->nama_acara}}</td>
-                    <td>Wasilatul</td>
-                    <td>[lokasi yang mana?]</td>
+                    <td>{{$u->tuan_rumah}}</td>
+                    <td>
+                        @if($u->undangan_pernikahan != null)
+                            {{$u->undangan_pernikahan->tempat_akad}} <span style="font-weight: bold">(Akad)</span><br>
+                            {{$u->undangan_pernikahan->tempat_resepsi}} <span style="font-weight: bold">(Resepsi)</span>
+                        @else
+                            {{$u->undangan_custom->tempat}}
+                        @endif
+                    </td>
                     <td>
                         <a href="#" class="btn btn-success">Lihat</a>
                         <a href="#" class="btn btn-primary">Buku tamu</a>

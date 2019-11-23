@@ -24,4 +24,9 @@ class Undangan_Pernikahan extends Model
         'jam_selesai_resepsi',
         'tempat_resepsi',
     ];
+
+    public function undangan()
+    {
+        return $this->morphTo();
+    }
 }

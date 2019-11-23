@@ -384,7 +384,7 @@
                 //...the form gets submitted:
                 document.getElementById("form-undangan").submit();
                 // return false;
-                {{--window.location = "{{ route('undangan-detail') }}";--}}
+                {{--window.location = "{{ route('detail-undangan') }}";--}}
             }
             // Otherwise, display the correct tab:
             showTab(currentTab);
