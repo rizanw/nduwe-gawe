@@ -46,7 +46,7 @@
                     </td>
                     <td>
                         <a href="#" class="btn btn-success">Lihat</a>
-                        <a href="#" class="btn btn-primary">Buku tamu</a>
+                        <a href="{{route('buku-tamu', $u->id)}}" class="btn btn-primary">Buku tamu</a>
                     </td>
                     <td>
                         <a href="{{route('undangan-detail', $u->id)}}" class="btn btn-success">Detail</a>
