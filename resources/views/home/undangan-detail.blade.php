@@ -3,6 +3,15 @@
 @section('content')
     <div class="container">
         <h1>Detail Undangan {{$undangan->nama_acara}}</h1>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#detail" role="tab"
@@ -317,7 +326,7 @@
                         </div>
                         <div class="form-group">
                             <label for="nohp-tamu">No hp</label>
-                            <input type="number" min="999" class="form-control" id="nohp-tamu" name="nohp-tamu"
+                            <input type="number" min="99999" class="form-control" id="nohp-tamu" name="nohp-tamu"
                                    placeholder="cth: 08219876543">
                         </div>
                         <div class="form-group">
