@@ -12,6 +12,7 @@ class Undangan extends Model
         'paket_id',
         'nama_acara',
         'tuan_rumah',
+        'desain_undangan',
         'jumlah_undangan_kosong',
     ];
 

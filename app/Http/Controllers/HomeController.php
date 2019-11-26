@@ -50,9 +50,9 @@ class HomeController extends Controller
         if ($undangan->user_id != Auth::user()->id)
             abort(404);
 
-        if($undangan->nama_acara == "Pernikahan"){
+        if ($undangan->nama_acara == "Pernikahan") {
             $undanganDetail = Undangan_Pernikahan::where('undangan_id', '=', $undangan->id)->first();
-        }else{
+        } else {
             $undanganDetail = Undangan_Custom::where('undangan_id', '=', $undangan->id)->first();
         }
 
@@ -66,20 +66,29 @@ class HomeController extends Controller
     {
         $undangan = Undangan::find($id);
         $tamus = Tamu::where('undangan_id', '=', $id)->get();
+        $undanganDesain = array();
+        $path = "";
 
         if ($undangan->user_id != Auth::user()->id)
             abort(404);
 
-        if($undangan->nama_acara == "Pernikahan"){
+        if ($undangan->nama_acara == "Pernikahan") {
             $undanganDetail = Undangan_Pernikahan::where('undangan_id', '=', $undangan->id)->first();
-        }else{
+            $path = glob(public_path('undangan/example/wedding/*.jpg'));
+        } else {
             $undanganDetail = Undangan_Custom::where('undangan_id', '=', $undangan->id)->first();
+            $path = glob(public_path('undangan/example/custom/*.jpg'));
+        }
+
+        foreach ($path as $p) {
+            array_push($undanganDesain, basename($p, '.jpg'));
         }
 
         return view('home.undangan-detail')
             ->with(compact('undangan'))
             ->with(compact('undanganDetail'))
-            ->with(compact('tamus'));
+            ->with(compact('tamus'))
+            ->with(compact('undanganDesain'));
     }
 
     public function indexUndanganBuat()

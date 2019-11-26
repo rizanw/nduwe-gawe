@@ -231,13 +231,13 @@
                                 <td>{{$tamu->status->nama}}</td>
                                 <td>
                                     @if($tamu->status_id == 1)
-                                    <form action="{{route('delete-tamu')}}" method="post">
-                                        @csrf
-                                        <div class="form-group">
-                                            <input type="hidden" name="tamu" value="{{$tamu->id}}">
-                                            <input type="submit" class="btn btn-danger delete-tamu" value="Hapus">
-                                        </div>
-                                    </form>
+                                        <form action="{{route('delete-tamu')}}" method="post">
+                                            @csrf
+                                            <div class="form-group">
+                                                <input type="hidden" name="tamu" value="{{$tamu->id}}">
+                                                <input type="submit" class="btn btn-danger delete-tamu" value="Hapus">
+                                            </div>
+                                        </form>
                                     @endif
                                 </td>
                             </tr>
@@ -253,7 +253,7 @@
                     </table>
                 </div>
                 <div style="position: absolute; bottom: 50px; right: 0px; padding-right: 200px;">
-                    <button class="btn btn-primary">Buku tamu</button>
+                    <a href="{{route('buku-tamu', $undanganDetail->id)}}" class="btn btn-primary">Buku tamu</a>
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#tambah-tamu">
                         Tambah Tamu
                     </button>
@@ -270,16 +270,37 @@
                 ...
                 <button class="btn btn-success">Bayar</button>
 
-
             </div>
             <div class="tab-pane fade" id="lihat" role="tabpanel" aria-labelledby="lihat-tab">
-                <img style="max-width: 320px;" src="{{asset('img//undangan-sample01.jpg')}}">
-                ...
-
-                <div style="position: absolute; bottom: 50px; right: 0px; padding-right: 200px;">
-                    <button class="btn btn-primary">+ Penerima Tamu</button>
-                    <button class="btn btn-success">Edit</button>
-                </div>
+                <form action="{{route('update-undangan-desain')}}" method="post">
+                    @csrf
+                    <input type="hidden" name="undangan" value="{{$undangan->id}}">
+                    <div class="d-flex flex-wrap">
+                        @foreach($undanganDesain as $desain)
+                            <label class="card m-4 text-center" for="{{$desain}}">
+                                <img class="card-img-top" style="max-width: 320px; display:block; margin:auto;"
+                                     @if($undangan->nama_acara == "pernikahan")
+                                     src="{{asset('undangan/example/wedding/'.$desain.'.jpg')}}"
+                                     @else
+                                     src="{{asset('undangan/example/custom/'.$desain.'.jpg')}}"
+                                    @endif
+                                >
+                                <div class="card-body">
+                                    <h5 class="card-title">{{$desain}}</h5>
+                                    <input class="form-check-input" id="{{$desain}}" type="radio"
+                                           name="desain-undangan" value="{{$desain}}"
+                                           @if($undangan->desain_undangan == $desain)
+                                           checked
+                                            @endif
+                                    >
+                                </div>
+                            </label>
+                        @endforeach
+                    </div>
+                    <div style="position: absolute; bottom: 50px; right: 0px; padding-right: 200px;">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
