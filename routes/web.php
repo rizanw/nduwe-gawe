@@ -33,7 +33,7 @@ Route::post('/home/undangan/tamu/hapus', 'TamuController@deleteTamu')->name('del
 
 Route::get('/admin', 'AdminController@index')->name('admin');
 
-Route::get('/playground', 'UndanganWatermarkerController@watermarker')->name('watermarker');
+Route::get('/watermarker', 'UndanganWatermarkerController@watermarker')->name('watermarker');
 Route::get('/scanner', function () {
     return view('scanner');
 });

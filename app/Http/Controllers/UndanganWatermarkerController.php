@@ -20,7 +20,7 @@ class UndanganWatermarkerController extends Controller
         $undangan = Undangan::find('1');
         $daftarTamu = Tamu::where('undangan_id', $undangan->id)->get();
         if ($undangan->nama_acara == "pernikahan") {
-            $undanganDetail = Undangan_Pernikahan::first($undangan->id);
+            $undanganDetail = Undangan_Pernikahan::where('undangan_id', $undangan->id)->first();
         } else {
             $undanganDetail = Undangan_Custom::where('undangan_id', $undangan->id)->first();
         }
@@ -43,17 +43,22 @@ class UndanganWatermarkerController extends Controller
         }
         mkdir(public_path("undangan/_order/{$folder}"), 0777, true);
 
+        $undanganKosong = $path.'_undangan_kosong.png';
         if ($undanganTipe == "pernikahan") {
-            return $this->undanganWedding1($undanganDetail);
-            //TODO::
+            $undanganFile = $this->undanganWeddingFrom($undanganDetail);
+            $undanganFile->save($undanganKosong);
         } else {
-            $undanganKosong = $path.'_undangan_kosong.png';
+//            $undanganKosong = $path.'_undangan_kosong.png';
             $undanganFile = $this->undanganCustomFrom($undanganDetail);
             $undanganFile->save($undanganKosong);
-            foreach ($daftarTamu as $detailTamu){
-                $undanganMod = $this->undanganCustomTo($undanganKosong, $detailTamu);
-                $undanganMod->save($path.$detailTamu->nama.'_'.$detailTamu->no_hp.'.png');
-            }
+//            foreach ($daftarTamu as $detailTamu){
+//                $undanganMod = $this->undanganTo($undanganKosong, $detailTamu);
+//                $undanganMod->save($path.$detailTamu->nama.'_'.$detailTamu->no_hp.'.png');
+//            }
+        }
+        foreach ($daftarTamu as $detailTamu){
+            $undanganMod = $this->undanganTo($undanganKosong, $detailTamu);
+            $undanganMod->save($path.$detailTamu->nama.'_'.$detailTamu->no_hp.'.png');
         }
 
         $zip_file = $folder.'.zip';
@@ -115,7 +120,50 @@ class UndanganWatermarkerController extends Controller
         return $img;
     }
 
-    public function undanganCustomTo($file, $tamu)
+    public function undanganWeddingFrom($undanganDetail)
+    {
+        $img = Image::make('undangan/template/wedding/wedding-0.jpg');
+        $barcode = DNS2D::getBarcodePNG("halo.wacil.puti?", "QRCODE", "5", "5");
+        $img->insert($barcode, 'bottom-right', 70, 70);
+        //nama cowo
+        $img->text($undanganDetail->nama_pria, 200, 400, function ($font) {
+            $font->file(base_path('public/fonts/Kastella.ttf'));
+            $font->size(40);
+            $font->align('center');
+            $font->valign('top');
+        });
+        //nama cewe
+        $img->text($undanganDetail->nama_wanita, 450, 400, function ($font) {
+            $font->file(base_path('public/fonts/Kastella.ttf'));
+            $font->size(40);
+            $font->align('center');
+            $font->valign('top');
+        });
+        //tanggal acara resepsi
+        $img->text('10 Nopember 999', 320, 530, function ($font) {
+            $font->file(base_path('public/fonts/Kastella.ttf'));
+            $font->color('#fff');
+            $font->size(40);
+            $font->align('center');
+            $font->valign('top');
+        });
+        //jam acara resepsi
+        $img->text('10:00 - 15:00', 320, 595, function ($font) {
+            $font->file(base_path('public/fonts/Kastella.ttf'));
+            $font->color('#777');
+            $font->size(22);
+            $font->align('center');
+            $font->valign('top');
+        });
+
+        //TODO::
+        //tempat acara
+        //alamat acara
+
+        return $img->response('png');
+    }
+
+    public function undanganTo($file, $tamu)
     {
         $img = Image::make($file);
         //nama
@@ -144,41 +192,5 @@ class UndanganWatermarkerController extends Controller
         $img->insert($barcode, 'bottom-right', 70, 70);
 
         return $img;
-    }
-
-
-    public function undanganWedding1()
-    {
-        $img = Image::make('undangan/template/wedding/wedding-0.jpg');
-        $barcode = DNS2D::getBarcodePNG("halo.wacil.puti?", "QRCODE", "5", "5");
-        $img->insert($barcode, 'bottom-right', 70, 70);
-        $img->text('Wacil', 200, 400, function ($font) {
-            $font->file(base_path('public/fonts/Kastella.ttf'));
-            $font->size(40);
-            $font->align('center');
-            $font->valign('top');
-        });
-        $img->text('Puti', 450, 400, function ($font) {
-            $font->file(base_path('public/fonts/Kastella.ttf'));
-            $font->size(40);
-            $font->align('center');
-            $font->valign('top');
-        });
-        $img->text('10 Nopember 999', 320, 530, function ($font) {
-            $font->file(base_path('public/fonts/Kastella.ttf'));
-            $font->color('#fff');
-            $font->size(40);
-            $font->align('center');
-            $font->valign('top');
-        });
-        $img->text('10:00 - 15:00', 320, 595, function ($font) {
-            $font->file(base_path('public/fonts/Kastella.ttf'));
-            $font->color('#777');
-            $font->size(22);
-            $font->align('center');
-            $font->valign('top');
-        });
-
-        return $img->response('png');
     }
 }
