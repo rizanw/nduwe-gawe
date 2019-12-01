@@ -161,17 +161,18 @@ class UndanganWatermarkerController extends Controller
         });
 
         //tempat
-        $img->text($undanganDetail->tempat, 750, 1200, function ($font) {
+        $img->text($undanganDetail->tempat, 320, 620, function ($font) {
             $font->file(base_path('public/fonts/Kastella.ttf'));
-            $font->size(60);
+            $font->size(22);
+            $font->color('#777');
             $font->align('center');
             $font->valign('top');
         });
         //alamat
-
-        $img->text($undanganDetail->alamat, 750, 1280, function ($font) {
+        $img->text($undanganDetail->alamat, 320, 690, function ($font) {
             $font->file(base_path('public/fonts/Kastella.ttf'));
-            $font->size(50);
+            $font->size(22);
+            $font->color('#777');
             $font->align('center');
             $font->valign('top');
         });
