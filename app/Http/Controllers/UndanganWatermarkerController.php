@@ -15,9 +15,10 @@ class UndanganWatermarkerController extends Controller
 {
     //
 
-    public function watermarker()
+    public function watermarker(Request $request)
     {
-        $undangan = Undangan::find('1');
+        $undanganId = $request->input('undangan', false);
+        $undangan = Undangan::find($undanganId);
         $daftarTamu = Tamu::where('undangan_id', $undangan->id)->get();
         if ($undangan->nama_acara == "pernikahan") {
             $undanganDetail = Undangan_Pernikahan::where('undangan_id', $undangan->id)->first();

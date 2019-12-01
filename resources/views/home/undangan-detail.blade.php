@@ -298,7 +298,7 @@
                         @endforeach
                     </div>
                     <div style="position: absolute; bottom: 50px; right: 0px; padding-right: 200px;">
-                        <button type="button" onclick="window.location.href = '{{route('watermarker')}}';" class="btn btn-primary">Download</button>
+                        <button type="button" onclick="window.location.href = '{{route('watermarker')}}?undangan={{$undangan->id}}&';" class="btn btn-primary">Download</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
