@@ -31,8 +31,8 @@ class UndanganWatermarkerController extends Controller
 
     public function makeUndangans($undanganTipe, $undanganDetail, $daftarTamu)
     {
-        $namaPria = str_replace(' ', '', $undanganDetail->nama_pria);
-        $namaWanita = str_replace(' ', '', $undanganDetail->nama_wanita);
+        $namaPria = str_replace(' ', '', $undanganDetail->Nama_Pria);
+        $namaWanita = str_replace(' ', '', $undanganDetail->Nama_Wanita);
         $folder = 'pernikahan' . $namaPria . $namaWanita;
         $folder = "{$undanganDetail->id}".$folder;
         $path = public_path("undangan/_order/{$folder}/");
@@ -47,7 +47,7 @@ class UndanganWatermarkerController extends Controller
         mkdir(public_path("undangan/_order/{$folder}"), 0777, true);
 
         $undanganKosong = $path.'_undangan_kosong.png';
-        if ($undanganTipe == "pernikahan") {
+        if ($undanganTipe == "Pernikahan") {
             $undanganFile = $this->undanganWeddingFrom($undanganDetail);
             $undanganFile->save($undanganKosong);
         } else {
