@@ -20,8 +20,8 @@ class UndanganWatermarkerController extends Controller
         $undanganId = $request->input('undangan', false);
         $undangan = Undangan::find($undanganId);
         $daftarTamu = Tamu::where('undangan_id', $undangan->id)->get();
-        if ($undangan->nama_acara == "pernikahan") {
-            $undanganDetail = Undangan_Pernikahan::where('undangan_id', $undangan->id)->first();
+        if ($undangan->nama_acara == "Pernikahan") {
+            $undanganDetail = Undangan_Pernikahan::where('undangan_id', '2')->first();
         } else {
             $undanganDetail = Undangan_Custom::where('undangan_id', $undangan->id)->first();
         }
