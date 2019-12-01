@@ -178,6 +178,15 @@
                 qrScanArea.show();
             }
         });
-        scan();
+
+        $('#QRModal').on('hidden', function () {
+            scanner.destroy();
+            qrScanArea.hide();
+        });
+
+        $('#QRModal').click(function () {
+            scan();
+        });
+
     </script>
 @endsection
