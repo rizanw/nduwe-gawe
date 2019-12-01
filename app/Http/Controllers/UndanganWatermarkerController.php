@@ -31,7 +31,9 @@ class UndanganWatermarkerController extends Controller
 
     public function makeUndangans($undanganTipe, $undanganDetail, $daftarTamu)
     {
-        $folder = str_replace(' ', '', $undanganDetail->nama);
+        $namaPria = str_replace(' ', '', $undanganDetail->nama_pria);
+        $namaWanita = str_replace(' ', '', $undanganDetail->nama_wanita);
+        $folder = 'pernikahan' . $namaPria . $namaWanita;
         $folder = "{$undanganDetail->id}".$folder;
         $path = public_path("undangan/_order/{$folder}/");
 
