@@ -28,17 +28,33 @@ class TamuController extends Controller
         return redirect()->back()->with('success', 'Berhasil: Tamu telah ditambahkan!');
     }
 
-    public function confirmTamu()
+    public function confirmTamu(Request $request)
     {
-        $kodetamu = '1567543231280';
-        try{
-            $tamu = Tamu::where('kode_tamu', '=', $kodetamu)->first();
-            $tamu->status_id = "7";
-            $tamu->save();
-        }catch (Exception $exception){
-            return redirect()->back()->with('fail', 'Gagal: ' . $exception);
+        $undanganId = $request->id;
+        $kodetamu = $request->qrcode;
+        $tamu = Tamu::where('kode_tamu', '=', $kodetamu)->first();
+
+        if ($tamu == null)
+            return redirect()->back()->with('error', 'Gagal: Tamu tidak terdaftar!');
+
+        if($tamu->undangan_id != $request->id){
+//            return "Tamu tidak terdaftar!";
+            return redirect()->back()->with('error', 'Gagal: Tamu tidak terdaftar!');
         }
-        return redirect()->back()->with('success', 'Berhasil: Tamu terkonfirmasi!');
+
+        try{
+            if ($tamu->status_id != 7){
+                $tamu->status_id = "7";
+                $tamu->save();
+//                return "berhasil";
+                return redirect()->back()->with('success', 'Berhasil: Tamu terkonfirmasi!');
+            }
+//            return "tamu sudah terdaftar";
+            return redirect()->back()->with('success', 'Peringatan: Tamu sudah dikonfirmasi!');
+        }catch (Exception $exception){
+            return "salah";
+        }
+//        return "berhasil";
     }
 
     public function deleteTamu(Request $request)

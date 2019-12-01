@@ -35,6 +35,7 @@ Route::get('/admin', 'AdminController@index')->name('admin');
 
 
 Route::get('/playground', 'TamuController@confirmTamu')->name('confirm-tamu');
+Route::post('/playground', 'TamuController@confirmTamu')->name('confirm-tamu');
 Route::get('/watermarker', 'UndanganWatermarkerController@watermarker')->name('watermarker');
 Route::get('/scanner', function () {
     return view('scanner');

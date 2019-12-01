@@ -279,7 +279,7 @@
                         @foreach($undanganDesain as $desain)
                             <label class="card m-4 text-center" for="{{$desain}}">
                                 <img class="card-img-top" style="max-width: 320px; display:block; margin:auto;"
-                                     @if($undangan->nama_acara == "pernikahan")
+                                     @if($undangan->nama_acara == "Pernikahan")
                                      src="{{asset('undangan/example/wedding/'.$desain.'.jpg')}}"
                                      @else
                                      src="{{asset('undangan/example/custom/'.$desain.'.jpg')}}"
@@ -289,16 +289,19 @@
                                     <h5 class="card-title">{{$desain}}</h5>
                                     <input class="form-check-input" id="{{$desain}}" type="radio"
                                            name="desain-undangan" value="{{$desain}}"
-                                           @if($undangan->desain_undangan == $desain)
+                                       @if($undangan->desain_undangan == $desain)
                                            checked
-                                            @endif
+                                        @endif
                                     >
                                 </div>
                             </label>
                         @endforeach
                     </div>
                     <div style="position: absolute; bottom: 50px; right: 0px; padding-right: 200px;">
-                        <button type="button" onclick="window.location.href = '{{route('watermarker')}}?undangan={{$undangan->id}}&';" class="btn btn-primary">Download</button>
+                        <button type="button"
+                                onclick="window.location.href = '{{route('watermarker')}}?undangan={{$undangan->id}}&';"
+                                class="btn btn-primary">Download
+                        </button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>

@@ -169,13 +169,13 @@ class UndanganWatermarkerController extends Controller
             $font->valign('top');
         });
         //alamat
-        $img->text($undanganDetail->alamat_resepsi, 320, 690, function ($font) {
-            $font->file(base_path('public/fonts/Kastella.ttf'));
-            $font->size(22);
-            $font->color('#777');
-            $font->align('center');
-            $font->valign('top');
-        });
+//        $img->text($undanganDetail->alamat_resepsi, 320, 690, function ($font) {
+//            $font->file(base_path('public/fonts/Kastella.ttf'));
+//            $font->size(22);
+//            $font->color('#777');
+//            $font->align('center');
+//            $font->valign('top');
+//        });
 
         return $img;
     }

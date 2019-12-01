@@ -3,14 +3,39 @@
 @section('content')
     <div class="container">
         <div style="display: inline">
-            <h1 style="display: inline-block;">Daftar Tamu : <a href="{{route('undangan-detail', $undangan->id)}}">{{$undangan->nama_acara}}</a></h1>
+            <h1 style="display: inline-block;">
+                Daftar Tamu :
+                <a href="{{route('undangan-detail', $undangan->id)}}">{{$undangan->nama_acara}}</a>
+            </h1>
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>{{ $message }}</strong>
+                </div>
+            @endif
+            @if ($message = Session::get('error'))
+                <div class="alert alert-danger alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>{{ $message }}</strong>
+                </div>
+            @endif
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         </div>
-            <div class="text-right">
-                <button type="button" class="btn btn-gold ml-1 mr-1 mb-2" data-toggle="modal" data-target="#QRModal">
-                    <i class="fas fa-qrcode"></i> Scan QR
-                </button>
-                <a href="{{ route('undangan-buat') }}"  class="btn btn-gold ml-1 mr-1 mb-2 disabled" aria-disabled="true"><i class="fas fa-file-download"></i> Unduh</a>
-            </div>
+        <div class="text-right">
+            <button type="button" class="btn btn-gold ml-1 mr-1 mb-2" data-toggle="modal" data-target="#QRModal">
+                <i class="fas fa-qrcode"></i> Scan QR
+            </button>
+            <a href="{{ route('undangan-buat') }}" class="btn btn-gold ml-1 mr-1 mb-2 disabled" aria-disabled="true"><i
+                    class="fas fa-file-download"></i> Unduh</a>
+        </div>
         <div class="small align-text-bottom" style="color: #555">
             Berikut daftar tamu undangan
         </div>
@@ -41,15 +66,20 @@
                             {{$tamu->status->nama}}
                         </td>
                         <td>
-                            [jam hadir tamu]
+                            @if($tamu->created_at != $tamu->updated_at)
+                                {{date("H:i", strtotime($tamu->updated_at))}}
+                            @endif
+
                         </td>
                         <td>
                             @if($tamu->status_id >= 2 && $tamu->status_id <= 6)
                                 <a href="{{route('undangan-detail', $tamu->id)}}" class="btn btn-primary">Hadir</a>
                             @elseif($tamu->status_id == 1)
-                                <a href="{{route('undangan-detail', $tamu->id)}}" class="btn btn-danger disabled" aria-disabled="true">Hapus</a>
+                                <a href="{{route('undangan-detail', $tamu->id)}}" class="btn btn-danger disabled"
+                                   aria-disabled="true">Hapus</a>
                             @elseif($tamu->status_id >= 7 && $tamu->status_id <=8)
-                                <a href="{{route('undangan-detail', $tamu->id)}}" class="btn btn-primary disabled" aria-disabled="true">Hadir</a>
+                                <a href="{{route('undangan-detail', $tamu->id)}}" class="btn btn-primary disabled"
+                                   aria-disabled="true">Hadir</a>
                             @endif
                         </td>
                     </tr>
@@ -74,7 +104,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <video muted="" playsinline="" id="qr-video" style="transform: scaleX(-1);" width="100%" height="100%"></video>
+                    <video muted="" playsinline="" id="qr-video" style="transform: scaleX(-1);" width="100%"
+                           height="100%"></video>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -90,6 +121,7 @@
 @section('script')
     <script type="module">
         import QrScanner from "{{asset('js/qr-scanner.min.js')}}";
+
         QrScanner.WORKER_PATH = "{{asset('js/qr-scanner-worker.min.js')}}";
 
         const video = document.getElementById("qr-video");
@@ -97,6 +129,7 @@
         const hashingProcess = $(".hashing_process");
         const noCameraAlert = $(".nocamera_alert");
         const inactiveAlert = $(".inactive_alert");
+
         function presensi(data) {
             qrScanArea.hide();
             hashingProcess.show();
@@ -134,32 +167,42 @@
                     }
                 },
                 error: function (e) {
+                    console.log('ada error:')
                     console.log(e);
                 }
             });
         }
+
         function konfirmasi(data) {
             qrScanArea.hide();
             hashingProcess.show();
-            $.ajax({
-                type: "POST",
-                url: "{{route('confirm-tamu')}}",
-                data: {qrcode: data},
-                dataType: "json",
-                success: function (response) {
-                    if (response.status === '200') {
-                        console.log(response);
-                        $('#pesan-error').innerHTML(response);
-                    } else {
-                        console.log(response);
-                        $('#pesan-error').innerHTML(response);
-                    }
-                },
-                error: function (e) {
-                    console.log(e);
-                }
-            })
+            window.location = "{{route('confirm-tamu')}}?qrcode=" + data + "&id=" + "{{$undangan->id}}&";
+            {{--            $.ajax({--}}
+            {{--                type: "POST",--}}
+            {{--                url: "{{route('confirm-tamu')}}",--}}
+            {{--                data: {--}}
+            {{--                    "_token": "{{ csrf_token() }}",--}}
+            {{--                    qrcode: data,--}}
+            {{--                },--}}
+            {{--                dataType: "json",--}}
+            {{--                success: function (response) {--}}
+            {{--                    if (response.status === '200') {--}}
+            {{--                        console.log("berhasil");--}}
+            {{--                        window.location.href = "localhost";--}}
+            {{--                        window.location.href = "{{route('buku-tamu', $undangan->id)}}";--}}
+            {{--                    } else {--}}
+            {{--                        console.log("gagal");--}}
+            {{--                        window.location.href = "localhost";--}}
+            {{--                        --}}{{--window.location.href = "{{route('buku-tamu', $undangan->id)}}";--}}
+            {{--                    }--}}
+            {{--                },--}}
+            {{--                error: function (e) {--}}
+            {{--                    console.log('ada error:');--}}
+            {{--                    console.log(e);--}}
+            {{--                }--}}
+            {{--            })--}}
         }
+
         function scan() {
             const scanner = new QrScanner(video, result => {
                 console.log("sedang scanning: ");
@@ -171,6 +214,7 @@
             });
             scanner.start();
         }
+
         QrScanner.hasCamera().then(response => {
             if (!response) {
                 noCameraAlert.show();
