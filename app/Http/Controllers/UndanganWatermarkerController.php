@@ -80,6 +80,7 @@ class UndanganWatermarkerController extends Controller
     public function undanganCustomFrom($undanganDetail)
     {
         $img = Image::make('undangan/template/custom/birthday-1.jpg');
+
         //judul
         $img->text($undanganDetail->nama, 750, 1010, function ($font) {
             $font->file(base_path('public/fonts/Kastella.ttf'));
@@ -116,7 +117,6 @@ class UndanganWatermarkerController extends Controller
             $font->align('center');
             $font->valign('top');
         });
-
         return $img;
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Tamu;
 use Illuminate\Http\Request;
+use mysql_xdevapi\Exception;
 
 class TamuController extends Controller
 {
@@ -25,6 +26,19 @@ class TamuController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Berhasil: Tamu telah ditambahkan!');
+    }
+
+    public function confirmTamu()
+    {
+        $kodetamu = '1567543231280';
+        try{
+            $tamu = Tamu::where('kode_tamu', '=', $kodetamu)->first();
+            $tamu->status_id = "7";
+            $tamu->save();
+        }catch (Exception $exception){
+            return redirect()->back()->with('fail', 'Gagal: ' . $exception);
+        }
+        return redirect()->back()->with('success', 'Berhasil: Tamu terkonfirmasi!');
     }
 
     public function deleteTamu(Request $request)

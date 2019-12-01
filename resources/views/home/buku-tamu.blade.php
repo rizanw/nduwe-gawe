@@ -83,6 +83,9 @@
             </div>
         </div>
     </div>
+    <div id="pesan-error">
+
+    </div>
 @endsection
 @section('script')
     <script type="module">
@@ -135,15 +138,36 @@
                 }
             });
         }
+        function konfirmasi(data) {
+            qrScanArea.hide();
+            hashingProcess.show();
+            $.ajax({
+                type: "POST",
+                url: "{{route('confirm-tamu')}}",
+                data: {qrcode: data},
+                dataType: "json",
+                success: function (response) {
+                    if (response.status === '200') {
+                        console.log(response);
+                        $('#pesan-error').innerHTML(response);
+                    } else {
+                        console.log(response);
+                        $('#pesan-error').innerHTML(response);
+                    }
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            })
+        }
         function scan() {
             const scanner = new QrScanner(video, result => {
                 console.log("sedang scanning: ");
                 console.log(result);
-                // scanner.destroy();
+                scanner.destroy();
                 // presensi(result);
+                konfirmasi(result);
                 // $('#text').innerHTML(result);
-                console.log("sedang scanning: ");
-                console.log(result);
             });
             scanner.start();
         }
