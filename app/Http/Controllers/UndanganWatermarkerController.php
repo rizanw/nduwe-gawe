@@ -143,7 +143,7 @@ class UndanganWatermarkerController extends Controller
             $font->valign('top');
         });
         //tanggal acara resepsi
-        $img->text('10 Nopember 999', 320, 530, function ($font) {
+        $img->text(date("D, d M Y", strtotime($undanganDetail->tanggal_resepsi)), 320, 530, function ($font) {
             $font->file(base_path('public/fonts/Kastella.ttf'));
             $font->color('#fff');
             $font->size(40);
@@ -151,7 +151,8 @@ class UndanganWatermarkerController extends Controller
             $font->valign('top');
         });
         //jam acara resepsi
-        $img->text('10:00 - 15:00', 320, 595, function ($font) {
+        $time = date("H:i", strtotime($undanganDetail->jam_mulai_resepsi)) . " s.d " . date("H:i", strtotime($undanganDetail->jam_selesai_resepsi));
+        $img->text($time, 320, 595, function ($font) {
             $font->file(base_path('public/fonts/Kastella.ttf'));
             $font->color('#777');
             $font->size(22);
@@ -159,9 +160,21 @@ class UndanganWatermarkerController extends Controller
             $font->valign('top');
         });
 
-        //TODO::
-        //tempat acara
-        //alamat acara
+        //tempat
+        $img->text($undanganDetail->tempat, 750, 1200, function ($font) {
+            $font->file(base_path('public/fonts/Kastella.ttf'));
+            $font->size(60);
+            $font->align('center');
+            $font->valign('top');
+        });
+        //alamat
+
+        $img->text($undanganDetail->alamat, 750, 1280, function ($font) {
+            $font->file(base_path('public/fonts/Kastella.ttf'));
+            $font->size(50);
+            $font->align('center');
+            $font->valign('top');
+        });
 
         return $img;
     }
@@ -191,7 +204,7 @@ class UndanganWatermarkerController extends Controller
             $font->valign('top');
         });
         //barcode
-        $barcode = DNS2D::getBarcodePNG($tamu->kode_tamu, "QRCODE", "12", "12");
+        $barcode = DNS2D::getBarcodePNG($tamu->kode_tamu, "QRCODE", "10", "10");
         $img->insert($barcode, 'bottom-right', 70, 70);
 
         return $img;
