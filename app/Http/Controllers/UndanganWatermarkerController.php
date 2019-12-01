@@ -31,8 +31,8 @@ class UndanganWatermarkerController extends Controller
 
     public function makeUndangans($undanganTipe, $undanganDetail, $daftarTamu)
     {
-        $namaPria = str_replace(' ', '', $undanganDetail->Nama_Pria);
-        $namaWanita = str_replace(' ', '', $undanganDetail->Nama_Wanita);
+        $namaPria = str_replace(' ', '', $undanganDetail->nama_pria);
+        $namaWanita = str_replace(' ', '', $undanganDetail->nama_wanita);
         $folder = 'pernikahan' . $namaPria . $namaWanita;
         $folder = "{$undanganDetail->id}".$folder;
         $path = public_path("undangan/_order/{$folder}/");
@@ -126,8 +126,8 @@ class UndanganWatermarkerController extends Controller
     public function undanganWeddingFrom($undanganDetail)
     {
         $img = Image::make('undangan/template/wedding/wedding-0.jpg');
-        $barcode = DNS2D::getBarcodePNG("halo.wacil.puti?", "QRCODE", "5", "5");
-        $img->insert($barcode, 'bottom-right', 70, 70);
+//        $barcode = DNS2D::getBarcodePNG("halo.wacil.puti?", "QRCODE", "5", "5");
+//        $img->insert($barcode, 'bottom-right', 70, 70);
         //nama cowo
         $img->text($undanganDetail->nama_pria, 200, 400, function ($font) {
             $font->file(base_path('public/fonts/Kastella.ttf'));
@@ -163,7 +163,7 @@ class UndanganWatermarkerController extends Controller
         //tempat acara
         //alamat acara
 
-        return $img->response('png');
+        return $img;
     }
 
     public function undanganTo($file, $tamu)
