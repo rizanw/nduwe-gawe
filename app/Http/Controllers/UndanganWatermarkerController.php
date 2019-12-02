@@ -26,10 +26,11 @@ class UndanganWatermarkerController extends Controller
             $undanganDetail = Undangan_Custom::where('undangan_id', $undangan->id)->first();
         }
 
-        return $this->makeUndangans($undangan->nama_acara, $undanganDetail, $daftarTamu);
+        return $this->makeUndangans($undangan->nama_acara, $undangan->desain_undangan, $undanganDetail, $daftarTamu);
+//        return redirect()->back()->with('success', 'Berhasil: Undangan telah diunduh!');
     }
 
-    public function makeUndangans($undanganTipe, $undanganDetail, $daftarTamu)
+    public function makeUndangans($undanganTipe, $undanganDesain, $undanganDetail, $daftarTamu)
     {
         $namaPria = str_replace(' ', '', $undanganDetail->nama_pria);
         $namaWanita = str_replace(' ', '', $undanganDetail->nama_wanita);
@@ -48,11 +49,11 @@ class UndanganWatermarkerController extends Controller
 
         $undanganKosong = $path.'_undangan_kosong.png';
         if ($undanganTipe == "Pernikahan") {
-            $undanganFile = $this->undanganWeddingFrom($undanganDetail);
+            $undanganFile = $this->undanganWeddingFrom($undanganDetail, $undanganDesain);
             $undanganFile->save($undanganKosong);
         } else {
 //            $undanganKosong = $path.'_undangan_kosong.png';
-            $undanganFile = $this->undanganCustomFrom($undanganDetail);
+            $undanganFile = $this->undanganCustomFrom($undanganDetail, $undanganDesain);
             $undanganFile->save($undanganKosong);
 //            foreach ($daftarTamu as $detailTamu){
 //                $undanganMod = $this->undanganTo($undanganKosong, $detailTamu);
@@ -80,9 +81,11 @@ class UndanganWatermarkerController extends Controller
         return response()->download($zip_file);
     }
 
-    public function undanganCustomFrom($undanganDetail)
+    public function undanganCustomFrom($undanganDetail, $undanganDesain)
     {
-        $img = Image::make('undangan/template/custom/birthday-1.jpg');
+        $desain = $undanganDesain;
+        $file = 'undangan/template/custom/'.$desain.'.jpg';
+        $img = Image::make($file);
 
         //judul
         $img->text($undanganDetail->nama, 750, 1010, function ($font) {
@@ -123,9 +126,10 @@ class UndanganWatermarkerController extends Controller
         return $img;
     }
 
-    public function undanganWeddingFrom($undanganDetail)
+    public function undanganWeddingFrom($undanganDetail, $undanganDesain)
     {
-        $img = Image::make('undangan/template/wedding/wedding-0.jpg');
+        $file = 'undangan/template/wedding/'.$undanganDesain.'.jpg';
+        $img = Image::make($file);
 //        $barcode = DNS2D::getBarcodePNG("halo.wacil.puti?", "QRCODE", "5", "5");
 //        $img->insert($barcode, 'bottom-right', 70, 70);
         //nama cowo

@@ -253,7 +253,7 @@
                     </table>
                 </div>
                 <div style="position: absolute; bottom: 50px; right: 0px; padding-right: 200px;">
-                    <a href="{{route('buku-tamu', $undanganDetail->id)}}" class="btn btn-primary">Buku tamu</a>
+                    <a href="{{route('buku-tamu', $undanganDetail->undangan_id)}}" class="btn btn-primary">Buku tamu</a>
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#tambah-tamu">
                         Tambah Tamu
                     </button>
