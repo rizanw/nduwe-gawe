@@ -3,7 +3,12 @@
 @section('content')
     <div class="container">
         <h1>Pembayaran {{$undangan->nama_acara}}</h1>
-                <div class="container-fluid mt-3">
+                <div class="container-fluid mt-3">                    
+                    <div>Transfer ke salah satu :</div>
+                    <div>BNI 0647168726</div>
+                    <div>Mandiri 1779237429000</div>
+                    <div>a.n Rizky Andre Wibisono</div>
+                    <br>
                     <div>Total Pembayaran : {{$bayar->total_bayar}} </div>
                     <div>Status Pembayaran : {{$bayar->status}} </div>
                     @if($bayar->status == "MENUNGGU VERIFIKASI")

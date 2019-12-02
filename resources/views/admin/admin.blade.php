@@ -4,18 +4,16 @@
     <div class="container">
         <div style="display: inline">
             <h1 style="max-width: 50%; display: inline-block;">Hi, {{  Auth::user()->name  }}</h1>
-            <a href="{{ route('undangan-buat') }}" style="float: right" class="btn btn-gold">Buat Undangan Acara</a>
-        </div>
+            </div>
         <div class="small mb-2" style="color: #555">
-            Berikut Daftar Undangan dan Acara yang pernah Anda buat.
+            Berikut Daftar Seluruh Undangan yang Dibuat oleh Semua User.
         </div>
         <table class="table table-bordered">
             <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nama Acara</th>
-                <th scope="col">Nama Tuan Rumah</th>
-                <th scope="col">Daftar Tamu</th>
+                <th scope="col">Tuan Rumah</th>
                 <th scope="col">Opsi</th>
                 <th scope="col"></th>
             </tr>
@@ -28,14 +26,10 @@
                     <td>{{$u->nama_acara}}</td>
                     <td>{{$u->tuan_rumah}}</td>
                     <td>
-                        <a href="#" class="btn btn-success">Lihat</a>
-                        <a href="{{route('buku-tamu', $u->id)}}" class="btn btn-primary">Buku Tamu</a>
+                        <a href="{{route('admin-undangan-detail', $u->id)}}" class="btn btn-success">Detail</a>
                     </td>
                     <td>
-                        <a href="{{route('undangan-detail', $u->id)}}" class="btn btn-success">Detail</a>
-                    </td>
-                    <td>
-                    <form action="{{route('user-delete-undangan')}}" method="post">
+                    <form action="{{route('delete-undangan')}}" method="post">
                         @csrf
                         <div class="form-group">
                             <input type="hidden" name="id" value="{{$u->id}}">

@@ -52,7 +52,7 @@ class UndanganController extends Controller
             ]);
         }
 
-        return redirect()->route('detail-undangan', [$undangan->id])->with('message', 'Berhasil: Undangan telah dibuat!');
+        return redirect()->route('undangan-detail', [$undangan->id])->with('message', 'Berhasil: Undangan telah dibuat!');
     }
 
     public function readDetailUndangan()

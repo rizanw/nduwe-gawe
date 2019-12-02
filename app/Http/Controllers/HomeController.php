@@ -140,4 +140,16 @@ class HomeController extends Controller
     $pembayaran = Pembayaran::find($request->id);
 	return redirect()->route('pembayaran', ['id' => $pembayaran->undangan_id]);
 }
+public function UserDeleteUndangan(Request $request)
+    {
+        $undangan = Undangan::find($request['id']);
+        if($undangan->nama_acara == "Pernikahan"){
+            Undangan_Pernikahan::where('undangan_id', '=', $request['id'])->delete();
+        }else{
+            Undangan_Custom::where('undangan_id', '=', $request['id'])->delete();
+        }
+        Undangan::where('id', '=', $request['id'])->delete();
+
+        return redirect()->back()->with('message', 'Berhasil: Undangan telah dihapus!');
+    }
 }
