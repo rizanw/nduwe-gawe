@@ -3,21 +3,6 @@
 @section('content')
     <div class="container">
         <h1>Detail Undangan {{$undangan->nama_acara}}</h1>
-        @if ($message = Session::get('success'))
-            <div class="alert alert-success alert-block">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>{{ $message }}</strong>
-            </div>
-        @endif
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#detail" role="tab"
@@ -201,11 +186,7 @@
                         </div>
                     </div>
                 @endif
-                <div style="position: absolute; bottom: 50px; right: 0px; padding-right: 200px;">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">+ Penerima Tamu
-                    </button>
-                    <button class="btn btn-success">Edit</button>
-                </div>
+                
             </div>
             <div class="tab-pane fade" id="tamu" role="tabpanel" aria-labelledby="tamu-tab">
                 <div class="container-fluid mt-3">
@@ -230,15 +211,10 @@
                                 <td>{{$tamu->alamat}}</td>
                                 <td>{{$tamu->status}}</td>
                                 <td>
-                                    @if($tamu->status_id == 1)
-                                        <form action="{{route('delete-tamu')}}" method="post">
-                                            @csrf
-                                            <div class="form-group">
-                                                <input type="hidden" name="tamu" value="{{$tamu->id}}">
-                                                <input type="submit" class="btn btn-danger delete-tamu" value="Hapus">
-                                            </div>
-                                        </form>
-                                    @endif
+                                    <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Edit Status -->
+                                    <!-- </button> -->
+                                    <a href="{{route('edit-status', $tamu->id)}}" class="btn btn-primary">Edit Status</a>
+
                                 </td>
                             </tr>
                         @endforeach
@@ -252,64 +228,16 @@
                         </tbody>
                     </table>
                 </div>
-                <div style="position: absolute; bottom: 50px; right: 0px; padding-right: 200px;">
-                    <a href="{{route('buku-tamu', $undangan->id)}}" class="btn btn-primary">Buku Tamu</a>
-
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#tambah-tamu">
-                        Tambah Tamu
-                    </button>
-                </div>
             </div>
 
             <div class="tab-pane fade" id="bayar" role="tabpanel" aria-labelledby="bayar-tab">
-                <p>
-                <ol>
-                    <li>Jika Sudah klik BAYAR data tidak dapat diedit</li>
-                    <li>Maks bayar 1x24jam</li>
-                </ol>
-                </p>
-                @if($pembayaran)
-                <a href="{{route('pembayaran', $undangan->id)}}" class="btn btn-success">Upload bukti pembayaran</a>
-                @else
-                <a href="{{route('pembayaran', $undangan->id)}}" class="btn btn-danger">Bayar</a>
-                @endif
+                <a href="{{route('admin-pembayaran', $undangan->id)}}" class="btn btn-success">Lihat bukti pembayaran</a>
 
             </div>
-            <div class="tab-pane fade" id="lihat" role="tabpanel" aria-labelledby="lihat-tab">
-                <form action="{{route('update-undangan-desain')}}" method="post">
-                    @csrf
-                    <input type="hidden" name="undangan" value="{{$undangan->id}}">
-                    <div class="d-flex flex-wrap">
-                        @foreach($undanganDesain as $desain)
-                            <label class="card m-4 text-center" for="{{$desain}}">
-                                <img class="card-img-top" style="max-width: 320px; display:block; margin:auto;"
-                                     @if($undangan->nama_acara == "Pernikahan")
-                                     src="{{asset('undangan/example/wedding/'.$desain.'.jpg')}}"
-                                     @else
-                                     src="{{asset('undangan/example/custom/'.$desain.'.jpg')}}"
-                                    @endif
-                                >
-                                <div class="card-body">
-                                    <h5 class="card-title">{{$desain}}</h5>
-                                    <input class="form-check-input" id="{{$desain}}" type="radio"
-                                           name="desain-undangan" value="{{$desain}}"
-                                       @if($undangan->desain_undangan == $desain)
-                                           checked
-                                        @endif
-                                    >
-                                </div>
-                            </label>
-                        @endforeach
-                    </div>
-                    <div style="position: absolute; bottom: 50px; right: 0px; padding-right: 200px;">
-                        <button type="button"
-                                onclick="window.location.href = '{{route('watermarker')}}?undangan={{$undangan->id}}&';"
-                                class="btn btn-primary">Download
-                        </button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                    </div>
-                </form>
-            </div>
+            <!-- <div class="tab-pane fade" id="lihat" role="tabpanel" aria-labelledby="lihat-tab">
+                <img style="max-width: 320px;" src="{{asset('img//undangan-sample01.jpg')}}">
+                ...
+            </div> -->
         </div>
     </div>
 
@@ -319,21 +247,27 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Tambah Penerima Tamu</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Status</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Email Penerima Tamu</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1"
-                               aria-describedby="emailHelp" placeholder="Enter email">
+                    <form method="POST" action="">
+                    @csrf
+                    <label for="exampleInputEmail1">Masukkan status</label>
+                        <input type="hidden" id="id" value="">
+                        <input type="text" class="form-control" id="status"
+                               aria-describedby="emailHelp" placeholder="masukkan status" name="status">
+                               <input type="submit" class="btn btn-primary updatestatus" value="Simpan">
+                    </form>
+                        
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-primary">Submit</button>
+                    <!-- <button type="button" class="btn btn-primary">Submit</button> -->
                 </div>
             </div>
         </div>
@@ -341,6 +275,15 @@
 @endsection
 
 @section('script')
+<!-- <script>
+$(document).on("click", ".open-AddBookDialog", function () {
+     var myBookId = $(this).data('id');
+     $(".modal-body #id").val( myBookId );
+     // As pointed out in comments, 
+     // it is unnecessary to have to manually call the modal.
+     // $('#addBookDialog').modal('show');
+});
+</script> -->
     <!-- Modal Tambah Tamu -->
     <div class="modal fade" id="tambah-tamu" tabindex="-1" role="dialog" aria-labelledby="tambah-tamu"
          aria-hidden="true">
@@ -363,7 +306,7 @@
                         </div>
                         <div class="form-group">
                             <label for="nohp-tamu">No hp</label>
-                            <input type="number" min="99999" class="form-control" id="nohp-tamu" name="nohp-tamu"
+                            <input type="number" min="999" class="form-control" id="nohp-tamu" name="nohp-tamu"
                                    placeholder="cth: 08219876543">
                         </div>
                         <div class="form-group">

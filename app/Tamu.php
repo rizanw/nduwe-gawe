@@ -12,6 +12,12 @@ class Tamu extends Model
         'kode_tamu',
         'nama',
         'alamat',
-        'no_hp'
+        'no_hp',
+        'status',
+        'status_id'
     ];
+
+    public function status(){
+        return $this->hasOne(Tamu_Status::class, 'id', 'status_id');
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Tamu;
 use Illuminate\Http\Request;
+use mysql_xdevapi\Exception;
 
 class TamuController extends Controller
 {
@@ -25,6 +26,35 @@ class TamuController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Berhasil: Tamu telah ditambahkan!');
+    }
+
+    public function confirmTamu(Request $request)
+    {
+        $undanganId = $request->id;
+        $kodetamu = $request->qrcode;
+        $tamu = Tamu::where('kode_tamu', '=', $kodetamu)->first();
+
+        if ($tamu == null)
+            return redirect()->back()->with('error', 'Gagal: Tamu tidak terdaftar!');
+
+        if($tamu->undangan_id != $request->id){
+//            return "Tamu tidak terdaftar!";
+            return redirect()->back()->with('error', 'Gagal: Tamu tidak terdaftar!');
+        }
+
+        try{
+            if ($tamu->status_id != 7){
+                $tamu->status_id = "7";
+                $tamu->save();
+//                return "berhasil";
+                return redirect()->back()->with('success', 'Berhasil: Tamu terkonfirmasi!');
+            }
+//            return "tamu sudah terdaftar";
+            return redirect()->back()->with('success', 'Peringatan: Tamu sudah dikonfirmasi!');
+        }catch (Exception $exception){
+            return "salah";
+        }
+//        return "berhasil";
     }
 
     public function deleteTamu(Request $request)

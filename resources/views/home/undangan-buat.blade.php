@@ -275,8 +275,7 @@
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title">Deskripsi: </h5>
-                                <p class="card-text">With supporting text below as a natural lead-in to additional
-                                    content.</p>
+                                <p class="card-text">Undangan digital dikirimkan melalui SMS. Bisa request undangan kosong.</p>
                                 <p class="card-text" style="margin-left: 2rem">
                                     <input class="form-check-input" id="paket-1" type="radio"
                                            name="paket" value="1">
@@ -294,8 +293,7 @@
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title">Deskripsi: </h5>
-                                <p class="card-text">With supporting text below as a natural lead-in to additional
-                                    content.</p>
+                                <p class="card-text">Undangan fisik dikirim melalui pos. Bisa request undangan kosong.</p>
                                 <p class="card-text" style="margin-left: 2rem">
                                     <input class="form-check-input" id="paket-2" type="radio"
                                            name="paket" value="2">
@@ -384,7 +382,7 @@
                 //...the form gets submitted:
                 document.getElementById("form-undangan").submit();
                 // return false;
-                {{--window.location = "{{ route('undangan-detail') }}";--}}
+                {{--window.location = "{{ route('detail-undangan') }}";--}}
             }
             // Otherwise, display the correct tab:
             showTab(currentTab);

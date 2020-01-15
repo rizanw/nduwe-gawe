@@ -16,6 +16,7 @@ class CreateTamusTable extends Migration
         Schema::create('tamus', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('undangan_id')->unsigned();
+            $table->bigInteger('kode_tamu');
             $table->string('nama', 100);
             $table->string('alamat', 200);
             $table->string('no_hp', 15);
