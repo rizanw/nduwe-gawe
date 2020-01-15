@@ -35,6 +35,7 @@ Route::post('/home/undangan/pembayaran', 'HomeController@updatePembayaran')->nam
 Route::post('/home/undangan/hapus', 'HomeController@userDeleteUndangan')->name('user-delete-undangan');
 
 Route::get('/admin', 'AdminController@index')->name('admin');
+
 Route::get('/admin/undangan/{id}/detail', 'AdminHomeController@indexUndanganDetail')->name('admin-undangan-detail');
 Route::post('/admin/undangan/hapus', 'AdminHomeController@deleteUndangan')->name('delete-undangan');
 Route::post('/admin/undangan/status', 'AdminHomeController@updateStatus')->name('update-status');
