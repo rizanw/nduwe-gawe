@@ -9,6 +9,7 @@ class Tamu extends Model
     //
     protected $fillable = [
         'undangan_id',
+        'kode_tamu',
         'nama',
         'alamat',
         'no_hp'

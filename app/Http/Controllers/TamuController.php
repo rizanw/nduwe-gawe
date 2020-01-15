@@ -10,16 +10,21 @@ class TamuController extends Controller
     //
     public function createTamu(Request $request)
     {
-        $request->validate([]);
+        $request->validate([
+            'nama-tamu' => 'required',
+            'nohp-tamu' => 'required|unique:tamus,no_hp',
+            'alamat-tamu' => 'required'
+        ]);
 
-        $tamu = Tamu::create([
+        Tamu::create([
             'undangan_id' => $request['undangan'],
             'nama' => $request['nama-tamu'],
             'alamat' => $request['alamat-tamu'],
-            'no_hp' => $request['nohp-tamu']
+            'no_hp' => $request['nohp-tamu'],
+            'kode_tamu' => $request['undangan'] . strrev($request['nohp-tamu']),
         ]);
 
-        return redirect()->back()->with('message', 'Berhasil: Tamu telah ditambahkan!');
+        return redirect()->back()->with('success', 'Berhasil: Tamu telah ditambahkan!');
     }
 
     public function deleteTamu(Request $request)
