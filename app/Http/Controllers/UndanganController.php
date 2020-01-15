@@ -50,7 +50,6 @@ class UndanganController extends Controller
                 'jam_selesai' => $request['jam-selesai-acara'],
             ]);
         }
-
         return redirect()->route('undangan-detail', [$undangan->id])->with('success', 'Berhasil: Undangan telah dibuat! Silakan isi daftar tamu, pilih desain undangan, dan lakukan pembayaran.');
     }
 

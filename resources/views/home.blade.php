@@ -9,17 +9,41 @@
         <div class="small mb-2" style="color: #555">
             Berikut Daftar Undangan dan Acara yang pernah Anda buat.
         </div>
-        <div class="table-responsive">
-            <table class="table table-bordered ">
-                <thead>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nama Acara</th>
+                <th scope="col">Nama Tuan Rumah</th>
+                <th scope="col">Daftar Tamu</th>
+                <th scope="col">Opsi</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            @php($i = 1)
+            @foreach($undangan as $u)
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Tanggal Acara</th>
-                    <th scope="col">Nama Acara</th>
-                    <th scope="col">Nama Tuan Rumah</th>
-                    <th scope="col">Lokasi Acara</th>
-                    <th scope="col">Daftar Tamu</th>
-                    <th scope="col">Opsi</th>
+                    <th scope="row">{{$i++}}</th>
+                    <td>{{$u->nama_acara}}</td>
+                    <td>{{$u->tuan_rumah}}</td>
+                    <td>
+                        <a href="#" class="btn btn-success">Lihat</a>
+                        <a href="{{route('buku-tamu', $u->id)}}" class="btn btn-primary">Buku Tamu</a>
+                    </td>
+                    <td>
+                        <a href="{{route('undangan-detail', $u->id)}}" class="btn btn-success">Detail</a>
+                    </td>
+                    <td>
+                    <form action="{{route('user-delete-undangan')}}" method="post">
+                        @csrf
+                        <div class="form-group">
+                            <input type="hidden" name="id" value="{{$u->id}}">
+                            <input type="submit" class="btn btn-danger delete-undangan" value="Hapus">
+                        </div>
+                    </form>
+                    </td>
+
                 </tr>
                 </thead>
                 <tbody>

@@ -6,6 +6,8 @@ use App\Tamu;
 use App\Undangan;
 use App\Undangan_Custom;
 use App\Undangan_Pernikahan;
+use App\Paket;
+use App\Pembayaran;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,6 +68,9 @@ class HomeController extends Controller
     {
         $undangan = Undangan::find($id);
         $tamus = Tamu::where('undangan_id', '=', $id)->get();
+        $pembayaran = Pembayaran::where('undangan_id', '=', $id)->first();
+        // $wordCount = count($tamus);
+        // dd($wordCount);
         $undanganDesain = array();
         $path = "";
 
@@ -87,6 +92,7 @@ class HomeController extends Controller
         return view('home.undangan-detail')
             ->with(compact('undangan'))
             ->with(compact('undanganDetail'))
+            ->with(compact('pembayaran'))
             ->with(compact('tamus'))
             ->with(compact('undanganDesain'));
     }
@@ -104,5 +110,75 @@ class HomeController extends Controller
     public function indexLayananKami()
     {
         return view('home.layanan-kami');
+    }
+
+    public function indexBukuTamuDetail($id)
+    {
+        $undangan = Undangan::find($id);
+        $tamus = Tamu::where('undangan_id', '=', $id)->get();
+
+        if ($undangan->user_id != Auth::user()->id)
+            abort(404);
+
+        return view('home.buku-tamu')
+            ->with(compact('undangan'))
+            ->with(compact('tamus'));
+    }
+
+    public function pembayaranDetail($id)
+    {
+        $undangan = Undangan::find($id);
+        $paket = Paket::where('id', '=', $undangan->paket_id)->first();
+        $tamus = Tamu::where('undangan_id', '=', $id)->get();
+        $jumlahTamu = count($tamus);
+        $total = ($jumlahTamu*$paket->harga)+($undangan->jumlah_undangan_kosong*10000);
+        $pembayaran = Pembayaran::where('undangan_id', '=', $id)->first();
+        if($pembayaran)
+        {
+            $bayar = Pembayaran::where('undangan_id', '=', $id)->first();
+            // echo "aa";die();
+        }
+        else{
+            $bayar = Pembayaran::create([
+                'undangan_id' => $id,
+                'total_bayar' => $total,
+                'status' => "BELUM BAYAR"
+            ]);
+            // echo "bb";die();
+            return redirect()->route('pembayaran', ['id' => $id]);
+        }
+        $bayar = Pembayaran::where('undangan_id', '=', $id)->first();
+        return view('home.pembayaran')
+            ->with(compact('bayar'))
+            ->with(compact('undangan'));
+    }
+
+    public function updatePembayaran(Request $request)
+{
+    // echo "aa"; die();
+    // update data pegawai
+    // if ($this->$request->hasFiles() == true) {
+        $file = file_get_contents($_FILES['bukti-bayar']['tmp_name']);
+        $efile = base64_encode($file);
+    // }
+	$upload = Pembayaran::where('id',$request->id)->update([
+        'bukti_bayar' => $efile,
+        'status' => "MENUNGGU VERIFIKASI"
+	]);
+    // alihkan halaman ke halaman pegawai
+    $pembayaran = Pembayaran::find($request->id);
+	return redirect()->route('pembayaran', ['id' => $pembayaran->undangan_id]);
+}
+public function UserDeleteUndangan(Request $request)
+    {
+        $undangan = Undangan::find($request['id']);
+        if($undangan->nama_acara == "Pernikahan"){
+            Undangan_Pernikahan::where('undangan_id', '=', $request['id'])->delete();
+        }else{
+            Undangan_Custom::where('undangan_id', '=', $request['id'])->delete();
+        }
+        Undangan::where('id', '=', $request['id'])->delete();
+
+        return redirect()->back()->with('message', 'Berhasil: Undangan telah dihapus!');
     }
 }
