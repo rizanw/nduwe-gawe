@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Undangan;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -24,6 +25,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin');
+        $undangan = Undangan::all();
+
+        return view('admin.admin')
+            ->with(compact('undangan'));
     }
 }

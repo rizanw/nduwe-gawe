@@ -20,6 +20,7 @@ class CreateUndangansTable extends Migration
             $table->bigInteger('paket_id')->unsigned();
             $table->string('nama_acara', 100);
             $table->string('tuan_rumah', 100);
+            $table->string('desain_undangan', 255)->nullable();
             $table->integer('jumlah_undangan_kosong');
             $table->timestamps();
 

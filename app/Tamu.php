@@ -13,6 +13,7 @@ class Tamu extends Model
         'nama',
         'alamat',
         'no_hp',
+        'status',
         'status_id'
     ];
 
