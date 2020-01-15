@@ -54,6 +54,9 @@
                         @endif
                     @else
                         <li class="nav-item">
+                            <a href="{{ route('home') }}" class="nav-link" role="button">Beranda</a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('layanan-kami') }}" class="nav-link" role="button">Layanan Kami</a>
                         </li>
                         <li class="nav-item dropdown">

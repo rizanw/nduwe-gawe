@@ -28,6 +28,7 @@ Route::get('/home/pembayaran/{id}', 'HomeController@pembayaranDetail')->name('pe
 
 
 Route::post('/home/undangan/buat', 'UndanganController@createUndangan')->name('create-undangan');
+Route::post('/home/undangan/update/desain', 'UndanganController@updateUndanganDesain')->name('update-undangan-desain');
 Route::post('/home/undangan/tamu/tambah', 'TamuController@createTamu')->name('create-tamu');
 Route::post('/home/undangan/tamu/hapus', 'TamuController@deleteTamu')->name('delete-tamu');
 Route::post('/home/undangan/pembayaran', 'HomeController@updatePembayaran')->name('update-pembayaran');
@@ -40,3 +41,10 @@ Route::post('/admin/undangan/status', 'AdminHomeController@updateStatus')->name(
 Route::get('/admin/undangan/tamu/{id}/edit', 'AdminHomeController@editStatus')->name('edit-status');
 Route::get('/admin/pembayaran/{id}', 'AdminHomeController@pembayaranDetail')->name('admin-pembayaran');
 Route::post('/admin/undangan/verifikasi', 'AdminHomeController@verifikasiPembayaran')->name('verifikasi-pembayaran');
+
+Route::get('/playground', 'TamuController@confirmTamu')->name('confirm-tamu');
+Route::post('/playground', 'TamuController@confirmTamu')->name('confirm-tamu');
+Route::get('/watermarker', 'UndanganWatermarkerController@watermarker')->name('watermarker');
+Route::get('/scanner', function () {
+    return view('scanner');
+});

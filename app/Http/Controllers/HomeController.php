@@ -44,6 +44,26 @@ class HomeController extends Controller
         return view('home.profile');
     }
 
+    public function indexBukuTamu($id)
+    {
+        $undangan = Undangan::find($id);
+        $tamus = Tamu::where('undangan_id', '=', $id)->get();
+
+        if ($undangan->user_id != Auth::user()->id)
+            abort(404);
+
+        if ($undangan->nama_acara == "Pernikahan") {
+            $undanganDetail = Undangan_Pernikahan::where('undangan_id', '=', $undangan->id)->first();
+        } else {
+            $undanganDetail = Undangan_Custom::where('undangan_id', '=', $undangan->id)->first();
+        }
+
+        return view('home.buku-tamu')
+            ->with(compact('undangan'))
+            ->with(compact('undanganDetail'))
+            ->with(compact('tamus'));
+    }
+
     public function indexUndanganDetail($id)
     {
         $undangan = Undangan::find($id);
@@ -51,20 +71,30 @@ class HomeController extends Controller
         $pembayaran = Pembayaran::where('undangan_id', '=', $id)->first();
         // $wordCount = count($tamus);
         // dd($wordCount);
+        $undanganDesain = array();
+        $path = "";
+
         if ($undangan->user_id != Auth::user()->id)
             abort(404);
 
-        if($undangan->nama_acara == "Pernikahan"){
+        if ($undangan->nama_acara == "Pernikahan") {
             $undanganDetail = Undangan_Pernikahan::where('undangan_id', '=', $undangan->id)->first();
-        }else{
+            $path = glob(public_path('undangan/example/wedding/*.jpg'));
+        } else {
             $undanganDetail = Undangan_Custom::where('undangan_id', '=', $undangan->id)->first();
+            $path = glob(public_path('undangan/example/custom/*.jpg'));
+        }
+
+        foreach ($path as $p) {
+            array_push($undanganDesain, basename($p, '.jpg'));
         }
 
         return view('home.undangan-detail')
             ->with(compact('undangan'))
             ->with(compact('undanganDetail'))
             ->with(compact('pembayaran'))
-            ->with(compact('tamus'));
+            ->with(compact('tamus'))
+            ->with(compact('undanganDesain'));
     }
 
     public function indexUndanganBuat()
@@ -76,7 +106,6 @@ class HomeController extends Controller
     {
         return view('home.daftar-tamu');
     }
-
 
     public function indexLayananKami()
     {

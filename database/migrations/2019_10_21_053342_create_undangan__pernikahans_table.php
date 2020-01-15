@@ -16,12 +16,12 @@ class CreateUndanganPernikahansTable extends Migration
         Schema::create('undangan__pernikahans', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('undangan_id')->unsigned();
-            $table->string('Nama_Pria', 100);
-            $table->string('Ibu_Pria', 100);
-            $table->string('Bapak_Pria', 100);
-            $table->string('Nama_Wanita', 100);
-            $table->string('Ibu_Wanita', 100);
-            $table->string('Bapak_Wanita', 100);
+            $table->string('nama_pria', 100);
+            $table->string('ibu_pria', 100);
+            $table->string('bapak_pria', 100);
+            $table->string('nama_wanita', 100);
+            $table->string('ibu_wanita', 100);
+            $table->string('bapak_wanita', 100);
             $table->date('tanggal_akad');
             $table->time('jam_mulai_akad');
             $table->time('jam_selesai_akad');

@@ -3,6 +3,21 @@
 @section('content')
     <div class="container">
         <h1>Detail Undangan {{$undangan->nama_acara}}</h1>
+        @if ($message = Session::get('success'))
+            <div class="alert alert-success alert-block">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>{{ $message }}</strong>
+            </div>
+        @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#detail" role="tab"
@@ -215,13 +230,15 @@
                                 <td>{{$tamu->alamat}}</td>
                                 <td>{{$tamu->status}}</td>
                                 <td>
-                                    <form action="{{route('delete-tamu')}}" method="post">
-                                        @csrf
-                                        <div class="form-group">
-                                            <input type="hidden" name="tamu" value="{{$tamu->id}}">
-                                            <input type="submit" class="btn btn-danger delete-tamu" value="Hapus">
-                                        </div>
-                                    </form>
+                                    @if($tamu->status_id == 1)
+                                        <form action="{{route('delete-tamu')}}" method="post">
+                                            @csrf
+                                            <div class="form-group">
+                                                <input type="hidden" name="tamu" value="{{$tamu->id}}">
+                                                <input type="submit" class="btn btn-danger delete-tamu" value="Hapus">
+                                            </div>
+                                        </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -237,6 +254,7 @@
                 </div>
                 <div style="position: absolute; bottom: 50px; right: 0px; padding-right: 200px;">
                     <a href="{{route('buku-tamu', $undangan->id)}}" class="btn btn-primary">Buku Tamu</a>
+
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#tambah-tamu">
                         Tambah Tamu
                     </button>
@@ -255,15 +273,42 @@
                 @else
                 <a href="{{route('pembayaran', $undangan->id)}}" class="btn btn-danger">Bayar</a>
                 @endif
+
             </div>
             <div class="tab-pane fade" id="lihat" role="tabpanel" aria-labelledby="lihat-tab">
-                <img style="max-width: 320px;" src="{{asset('img//undangan-sample01.jpg')}}">
-                ...
-
-                <div style="position: absolute; bottom: 50px; right: 0px; padding-right: 200px;">
-                    <button class="btn btn-primary">+ Penerima Tamu</button>
-                    <button class="btn btn-success">Edit</button>
-                </div>
+                <form action="{{route('update-undangan-desain')}}" method="post">
+                    @csrf
+                    <input type="hidden" name="undangan" value="{{$undangan->id}}">
+                    <div class="d-flex flex-wrap">
+                        @foreach($undanganDesain as $desain)
+                            <label class="card m-4 text-center" for="{{$desain}}">
+                                <img class="card-img-top" style="max-width: 320px; display:block; margin:auto;"
+                                     @if($undangan->nama_acara == "Pernikahan")
+                                     src="{{asset('undangan/example/wedding/'.$desain.'.jpg')}}"
+                                     @else
+                                     src="{{asset('undangan/example/custom/'.$desain.'.jpg')}}"
+                                    @endif
+                                >
+                                <div class="card-body">
+                                    <h5 class="card-title">{{$desain}}</h5>
+                                    <input class="form-check-input" id="{{$desain}}" type="radio"
+                                           name="desain-undangan" value="{{$desain}}"
+                                       @if($undangan->desain_undangan == $desain)
+                                           checked
+                                        @endif
+                                    >
+                                </div>
+                            </label>
+                        @endforeach
+                    </div>
+                    <div style="position: absolute; bottom: 50px; right: 0px; padding-right: 200px;">
+                        <button type="button"
+                                onclick="window.location.href = '{{route('watermarker')}}?undangan={{$undangan->id}}&';"
+                                class="btn btn-primary">Download
+                        </button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -318,7 +363,7 @@
                         </div>
                         <div class="form-group">
                             <label for="nohp-tamu">No hp</label>
-                            <input type="number" min="999" class="form-control" id="nohp-tamu" name="nohp-tamu"
+                            <input type="number" min="99999" class="form-control" id="nohp-tamu" name="nohp-tamu"
                                    placeholder="cth: 08219876543">
                         </div>
                         <div class="form-group">
